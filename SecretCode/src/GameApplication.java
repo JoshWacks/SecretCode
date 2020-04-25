@@ -145,15 +145,15 @@ public class GameApplication {
 
 				
 				JPanel pnlJudge=new JPanel();
+				pnlJudge.setName(resultName+count2);
 				GridLayout grid=new GridLayout(1,4,3,0);
 				pnlJudge.setLayout(grid);
 				pnlJudge.setBackground(Color.WHITE);
+				
 				for(int k=0;k<4;k++) {
 					pnlJudge.add(new CustomPaintComponent());
-					pnlJudge.setName(resultName+count2);
-					
-
 				}
+				
 				count2--;
 				pnlMain.add(pnlJudge);
 				col=0;
