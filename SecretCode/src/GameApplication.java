@@ -1,5 +1,8 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -11,10 +14,17 @@ import javax.swing.JTextPane;
 import javax.swing.border.Border;
 
 import java.awt.CardLayout;
+import javax.swing.border.LineBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class GameApplication {
 
-	private JFrame frame;
+	private static JFrame frame;
 	private final JPanel pnlMain = new JPanel();
 	private final JPanel pnlColorsCard = new JPanel();
 
@@ -26,6 +36,7 @@ public class GameApplication {
 			public void run() {
 				try {
 					GameApplication window = new GameApplication();
+
 					
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -43,6 +54,22 @@ public class GameApplication {
 		createMainPanel();
 		createChooseColourPanel();
 	}
+	
+	static class CustomPaintComponent extends Component {
+		public void paint(Graphics g) {
+			Graphics g2d=(Graphics2D)g;
+			g2d.setColor(Color.BLACK);
+			int x=0;
+			int y=0;
+			int w=getSize().width-1;
+			int h=getSize().height-1;
+			
+			g2d.drawOval(x, y, w, h);
+					
+			
+			
+		}
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -56,9 +83,16 @@ public class GameApplication {
 		frame.setForeground(Color.BLACK);
 		frame.getContentPane().setLayout(null);
 		pnlMain.setBackground(Color.BLACK);
-		pnlMain.setBounds(0, 70, 700, 540);
+		pnlMain.setBounds(0, 70, 700, 535);
+		
 		frame.getContentPane().add(pnlMain);
-		pnlMain.setLayout(new GridLayout(10,5, 8,10));
+		
+		GridLayout grid=new GridLayout(10,5, 8,10);
+		
+		
+
+		pnlMain.setLayout(grid);
+		
 		
 		
 		pnlColorsCard.setBackground(Color.ORANGE);
@@ -66,45 +100,61 @@ public class GameApplication {
 		frame.getContentPane().add(pnlColorsCard);
 		pnlColorsCard.setLayout(new CardLayout(0, 0));
 		
+		JLabel lblDanger = new JLabel("");
+		lblDanger.setBackground(Color.RED);
+		lblDanger.setForeground(Color.RED);
+		lblDanger.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDanger.setIcon(new ImageIcon(GameApplication.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-error@2x.png")));
+		lblDanger.setBounds(0, 0, 147, 69);
+		frame.getContentPane().add(lblDanger);
 		
-
+		JButton btnSecretCode = new JButton("SECRET CODE");
+		btnSecretCode.setBounds(145, 0, 407, 69);
+		frame.getContentPane().add(btnSecretCode);
+		btnSecretCode.setForeground(Color.YELLOW);
+		btnSecretCode.setFont(new Font("High Tower Text", Font.BOLD, 36));
+		btnSecretCode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnSecretCode.setIcon(new ImageIcon(GameApplication.class.getResource("/javax/swing/plaf/metal/icons/Warn.gif")));
+		btnSecretCode.setBackground(Color.RED);
 		
-//		JPanel pnlJudge9=new JPanel();
-//		pnlJudge9.setBackground(Color.WHITE);
-//		pnlMain.add(pnlJudge9);
-//		
-//		JTextPane txtpA90=new JTextPane();
-//		txtpA90.setBackground(Color.WHITE);
-//		pnlMain.add(txtpA90);
-//		
-//		JTextPane txtpA91=new JTextPane();
-//		txtpA91.setBackground(Color.WHITE);
-//		pnlMain.add(txtpA91);
+		JLabel lblDanger2 = new JLabel("");
+		lblDanger2.setBackground(Color.RED);
+		lblDanger2.setIcon(new ImageIcon(GameApplication.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-error@2x.png")));
+		lblDanger2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDanger2.setForeground(Color.WHITE);
+		lblDanger2.setBounds(555, 0, 139, 69);
+		frame.getContentPane().add(lblDanger2);
 		
 		
 	}
+	
 	public void createMainPanel() {
-		String resultName="jtxtResult";
-		String attemptName="jtxtAttempt";
+		String resultName="pnlJudge";
+		String attemptName="btnAttempt";
 		int count1=9;
+		int count2=9;
 		int col=0;
+		
 		
 		for(int i=0;i<50;i++) {
 			
 			if((i%5)==0) {
-				
+
 				
 				JPanel pnlJudge=new JPanel();
-				GridLayout grid=new GridLayout(1,4,3,3);
+				GridLayout grid=new GridLayout(1,4,3,0);
 				pnlJudge.setLayout(grid);
 				pnlJudge.setBackground(Color.WHITE);
 				for(int k=0;k<4;k++) {
-					JTextPane jtxtResult=new JTextPane();
-					jtxtResult.setBackground(Color.CYAN);
-					jtxtResult.setName(resultName+count1+""+k);
-					jtxtResult.setText(jtxtResult.getName());
-					pnlJudge.add(jtxtResult);
+					pnlJudge.add(new CustomPaintComponent());
+					pnlJudge.setName(resultName+count2);
+					
+
 				}
+				count2--;
 				pnlMain.add(pnlJudge);
 				col=0;
 				if(i!=0) {
@@ -113,12 +163,14 @@ public class GameApplication {
 				
 			}
 			else {
-				JTextPane jtxtAttempt=new JTextPane();
-				jtxtAttempt.setName(attemptName+count1+""+col);
+				JButton btnAttempt=new JButton();
+				btnAttempt.setName(attemptName+count1+""+col);
+
+			
 				col++;
-				jtxtAttempt.setText(jtxtAttempt.getName());
-				jtxtAttempt.setBackground(Color.WHITE);
-				pnlMain.add(jtxtAttempt);
+
+				btnAttempt.setBackground(Color.WHITE);
+				pnlMain.add(btnAttempt);
 				
 			}
 			
@@ -130,9 +182,13 @@ public class GameApplication {
 		pnlColors.setLayout(grid);
 		
 		
-		Border b=BorderFactory.createLineBorder(Color.BLACK, 2, true);
+		Border b=BorderFactory.createLineBorder(Color.BLACK, 5, true);
 		
 		JButton btnYellow=new JButton();
+		btnYellow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnYellow.setName("btnYellow");
 		btnYellow.setBackground(Color.YELLOW);
 		btnYellow.setBorder(b);
