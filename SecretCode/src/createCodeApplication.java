@@ -26,6 +26,7 @@ import java.awt.Component;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.awt.FlowLayout;
 
 public class createCodeApplication extends JFrame {
@@ -34,6 +35,8 @@ public class createCodeApplication extends JFrame {
 	static GameMethods gm=new GameMethods();
 	private JLabel lblInstructions;
 
+	Color[] arrColor={null,null,null,null};
+	
 	/**
 	 * Launch the application.
 	 */
@@ -219,6 +222,7 @@ public class createCodeApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 				}
 				else {
+					arrColor[0]=gm.getSelectedColor();
 					pnlCode0.add(new CustomPaintFillComponent());
 					revalidate();
 				}
@@ -241,6 +245,7 @@ public class createCodeApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 				}
 				else {
+					arrColor[1]=gm.getSelectedColor();
 					pnlCode1.add(new CustomPaintFillComponent());
 					revalidate();
 				}
@@ -262,6 +267,7 @@ public class createCodeApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 				}
 				else {
+					arrColor[2]=gm.getSelectedColor();
 					pnlCode2.add(new CustomPaintFillComponent());
 					revalidate();
 				}
@@ -283,6 +289,7 @@ public class createCodeApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 				}
 				else {
+					arrColor[3]=gm.getSelectedColor();
 					pnlCode3.add(new CustomPaintFillComponent());
 					revalidate();
 				}
@@ -304,6 +311,12 @@ public class createCodeApplication extends JFrame {
 		contentPane.add(lblInstructions);
 		
 		JButton btnNewButton = new JButton("READY!");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				gm.setCodeArr(arrColor);
+			}
+		});
 		btnNewButton.setBackground(new Color(0, 0, 0));
 		btnNewButton.setFont(new Font("Javanese Text", Font.BOLD, 28));
 		btnNewButton.setForeground(new Color(255, 102, 0));
@@ -316,9 +329,5 @@ public class createCodeApplication extends JFrame {
 		
 	}
 	
-	public void drawCircles(JPanel jp) {
-		for(int i=0;i<4;i++) {
-			jp.add(new CustomPaintComponent());
-		}
-	}
+	
 }

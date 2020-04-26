@@ -34,6 +34,7 @@ public class GameApplication {
 	private static JFrame frame;
 	private final JPanel pnlMain = new JPanel();
 	private final JPanel pnlColorsCard = new JPanel();
+	JLabel lblAttemptNo = new JLabel();
 	static GameMethods gm=new GameMethods();
 
 	/**
@@ -122,7 +123,7 @@ public class GameApplication {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 0, 700, 750);
+		frame.setBounds(200, 0, 900, 750);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setBackground(Color.BLACK);
@@ -159,7 +160,7 @@ public class GameApplication {
 		btnSecretCode.setBounds(145, 0, 407, 69);
 		frame.getContentPane().add(btnSecretCode);
 		btnSecretCode.setForeground(Color.YELLOW);
-		btnSecretCode.setFont(new Font("High Tower Text", Font.BOLD, 36));
+		btnSecretCode.setFont(new Font("High Tower Text", Font.BOLD, 40));
 		btnSecretCode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -175,13 +176,43 @@ public class GameApplication {
 		lblDanger2.setBounds(555, 0, 139, 69);
 		frame.getContentPane().add(lblDanger2);
 		
+		JLabel lblAttemptHeading = new JLabel("Attempt No.");
+		lblAttemptHeading.setForeground(new Color(0, 51, 153));
+		lblAttemptHeading.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAttemptHeading.setFont(new Font("Segoe Script", Font.BOLD, 28));
+		lblAttemptHeading.setBounds(707, 98, 187, 82);
+		frame.getContentPane().add(lblAttemptHeading);
+		
+		
+		lblAttemptNo.setText("1");
+		lblAttemptNo.setFont(new Font("Rockwell", Font.BOLD, 86));
+		lblAttemptNo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAttemptNo.setBounds(756, 184, 86, 88);
+		lblAttemptNo.setForeground(new Color(0, 51, 153));
+		lblAttemptNo.setBackground(Color.BLACK);
+		lblAttemptNo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
+		frame.getContentPane().add(lblAttemptNo);
+		JButton btnCheck = new JButton("Check");
+		btnCheck.setBackground(Color.BLACK);
+		btnCheck.setForeground(new Color(0, 128, 0));
+		btnCheck.setFont(new Font("Segoe UI", Font.BOLD, 26));
+		btnCheck.setToolTipText("Press here to check you attempt");
+		btnCheck.setBounds(740, 518, 135, 60);
+		frame.getContentPane().add(btnCheck);
+		
+		frame.add(lblAttemptNo);
+		
 		
 	}
 	
-	public void createMainPanel() {
+		JLabel  lblAttempt = new JLabel("Attempt");
+		
+		
+		public void createMainPanel() {
+			
 		String resultName="pnlJudge";
 		String attemptName="pnlAttempt";
-		int count1=9;
+		int row1=9;
 		int count2=9;
 		int col=0;
 		
@@ -205,7 +236,7 @@ public class GameApplication {
 				pnlMain.add(pnlJudge);
 				col=0;
 				if(i!=0) {
-					count1--;
+					row1--;
 				}
 				
 			}
@@ -213,17 +244,41 @@ public class GameApplication {
 				JPanel pnlAttempt=new JPanel();
 				
 				pnlAttempt.setLayout(new BorderLayout(0, 0));
-				pnlAttempt.setName(attemptName+count1+""+col);
+				pnlAttempt.setName(attemptName+row1+""+col);
 				pnlAttempt.setBackground(Color.WHITE);
 				pnlAttempt.add(new AttemptPaintComponent());
 				
 				pnlAttempt.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
+						String str=lblAttemptNo.getText().toString();
+						int n=Integer.parseInt(str);
+						boolean correctRow=gm.checkCorrectRow(pnlAttempt, n);
+						String row;
+						if(n==1) {
+							row="1st";
+						}
+						else if(n==2) {
+							row="2nd";
+							
+						}
+						else if(n==3) {
+							row="3rd";
+							
+						}
+						else {
+							row=n+"th";
+						}
+						
 						if(gm.getSelectedColor()==null) {
 							JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 						}
+						else if(!correctRow) {
+							JOptionPane.showMessageDialog(null, "Please Select a position on the "+row+" row");
+						}
 						else {
+							
+							
 							pnlAttempt.add(new CustomPaintFillComponent());
 							
 							pnlAttempt.revalidate();
