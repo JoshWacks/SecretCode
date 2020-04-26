@@ -79,7 +79,7 @@ public class createCodeApplication extends JFrame {
 				
 				
 				g2d.setColor(gm.getSelectedColor());
-				((Graphics2D) g2d).setStroke(new BasicStroke(5));
+
 				
 				g2d.fillOval(x, y, w, h);
 			

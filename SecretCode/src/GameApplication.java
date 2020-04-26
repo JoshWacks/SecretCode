@@ -13,13 +13,20 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.Border;
 
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import javax.swing.border.LineBorder;
+
+
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 public class GameApplication {
@@ -27,6 +34,7 @@ public class GameApplication {
 	private static JFrame frame;
 	private final JPanel pnlMain = new JPanel();
 	private final JPanel pnlColorsCard = new JPanel();
+	static GameMethods gm=new GameMethods();
 
 	/**
 	 * Launch the application.
@@ -55,14 +63,15 @@ public class GameApplication {
 		createChooseColourPanel();
 	}
 	
-	static class CustomPaintComponent extends Component {
+	static class JudgePaintComponent extends Component {//paints the circles for the judging
 		public void paint(Graphics g) {
 			Graphics g2d=(Graphics2D)g;
 			g2d.setColor(Color.BLACK);
-			int x=0;
-			int y=0;
-			int w=getSize().width-1;
-			int h=getSize().height-1;
+			int x=5;
+			int y=8;
+			int w=getSize().width-7;
+			int h=getSize().height-15;
+			((Graphics2D) g2d).setStroke(new BasicStroke(3));
 			
 			g2d.drawOval(x, y, w, h);
 					
@@ -70,6 +79,43 @@ public class GameApplication {
 			
 		}
 	}
+	
+	static class AttemptPaintComponent extends Component {//paints the ovals for the attempts
+		public void paint(Graphics g) {
+			Graphics g2d=(Graphics2D)g;
+			g2d.setColor(Color.BLACK);
+			int x=40;
+			int y=3;
+			int w=getSize().width-90;
+			int h=getSize().height-5;
+			((Graphics2D) g2d).setStroke(new BasicStroke(5));
+			
+			g2d.drawOval(x, y, w, h);
+					
+			
+			
+		}
+	}
+	static class CustomPaintFillComponent extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=40;
+				int y=3;
+				int w=getSize().width-90;
+				int h=getSize().height-5;
+				
+				
+				g2d.setColor(gm.getSelectedColor());
+
+				
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	
+//	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -87,12 +133,13 @@ public class GameApplication {
 		
 		frame.getContentPane().add(pnlMain);
 		
-		GridLayout grid=new GridLayout(10,5, 8,10);
+		GridLayout grid=new GridLayout(10,5, 0,7);//the main grid layout
 		
 		
 
-		pnlMain.setLayout(grid);
 		
+		//frame.getContentPane().add(new linePaintComponent());//draws the dividing line on the board
+		pnlMain.setLayout(grid);
 		
 		
 		pnlColorsCard.setBackground(Color.ORANGE);
@@ -133,7 +180,7 @@ public class GameApplication {
 	
 	public void createMainPanel() {
 		String resultName="pnlJudge";
-		String attemptName="btnAttempt";
+		String attemptName="pnlAttempt";
 		int count1=9;
 		int count2=9;
 		int col=0;
@@ -145,13 +192,13 @@ public class GameApplication {
 
 				
 				JPanel pnlJudge=new JPanel();
-				pnlJudge.setName(resultName+count2);
-				GridLayout grid=new GridLayout(1,4,3,0);
+				pnlJudge.setName(resultName+count2);//changes the name to which row it is judging
+				GridLayout grid=new GridLayout(1,4,0,0);
 				pnlJudge.setLayout(grid);
 				pnlJudge.setBackground(Color.WHITE);
 				
 				for(int k=0;k<4;k++) {
-					pnlJudge.add(new CustomPaintComponent());
+					pnlJudge.add(new JudgePaintComponent());
 				}
 				
 				count2--;
@@ -163,14 +210,35 @@ public class GameApplication {
 				
 			}
 			else {
-				JButton btnAttempt=new JButton();
-				btnAttempt.setName(attemptName+count1+""+col);
+				JPanel pnlAttempt=new JPanel();
+				
+				pnlAttempt.setLayout(new BorderLayout(0, 0));
+				pnlAttempt.setName(attemptName+count1+""+col);
+				pnlAttempt.setBackground(Color.WHITE);
+				pnlAttempt.add(new AttemptPaintComponent());
+				
+				pnlAttempt.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mousePressed(MouseEvent e) {
+						if(gm.getSelectedColor()==null) {
+							JOptionPane.showMessageDialog(null, "Please Select A Colour First");
+						}
+						else {
+							pnlAttempt.add(new CustomPaintFillComponent());
+							
+							pnlAttempt.revalidate();
+							
+						}
+						
+						
+					}
+				});
 
 			
 				col++;
 
-				btnAttempt.setBackground(Color.WHITE);
-				pnlMain.add(btnAttempt);
+				
+				pnlMain.add(pnlAttempt);
 				
 			}
 			
@@ -185,52 +253,98 @@ public class GameApplication {
 		Border b=BorderFactory.createLineBorder(Color.BLACK, 5, true);
 		
 		JButton btnYellow=new JButton();
-		btnYellow.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnYellow.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.YELLOW);
 			}
 		});
+		
 		btnYellow.setName("btnYellow");
 		btnYellow.setBackground(Color.YELLOW);
 		btnYellow.setBorder(b);
 		pnlColors.add(btnYellow);
 		
 		JButton btnGreen=new JButton();
+		btnGreen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.GREEN);
+			}
+		});
 		btnGreen.setName("btnGreen");
 		btnGreen.setBackground(Color.GREEN);
 		btnGreen.setBorder(b);
 		pnlColors.add(btnGreen);
 		
 		JButton btnMagenta=new JButton();
+		btnMagenta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.MAGENTA);
+			}
+		});
 		btnMagenta.setName("btnMagenta");
 		btnMagenta.setBackground(Color.MAGENTA);
 		btnMagenta.setBorder(b);
 		pnlColors.add(btnMagenta);
 
 		JButton btnBlue=new JButton();
+		btnBlue.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.BLUE);
+			}
+		});
 		btnBlue.setName("btnBlue");
 		btnBlue.setBackground(Color.BLUE);
 		btnBlue.setBorder(b);
 		pnlColors.add(btnBlue);
 		
 		JButton btnWhite=new JButton();
+		btnWhite.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.WHITE);
+			}
+		});
 		btnWhite.setName("btnWhite");
 		btnWhite.setBackground(Color.WHITE);
 		btnWhite.setBorder(b);
 		pnlColors.add(btnWhite);
 		
 		JButton btnBlack=new JButton();
+
+		btnBlack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.BLACK);
+			}
+		});
 		btnBlack.setName("btnBlack");
 		btnBlack.setBackground(Color.BLACK);
 		btnBlack.setBorder(b);
 		pnlColors.add(btnBlack);
 		
 		JButton btnRed=new JButton();
+		btnRed.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.RED);
+			}
+		});
 		btnRed.setName("btnRed");
 		btnRed.setBackground(Color.RED);
 		btnRed.setBorder(b);
 		pnlColors.add(btnRed);
 		
 		JButton btnGray=new JButton();
+		btnGray.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.GRAY);
+			}
+		});
 		btnGray.setName("btnGray");
 		btnGray.setBackground(Color.GRAY);
 		btnGray.setBorder(b);
