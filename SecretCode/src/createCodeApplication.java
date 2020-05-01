@@ -32,10 +32,11 @@ import java.awt.FlowLayout;
 public class createCodeApplication extends JFrame {
 
 	private JPanel contentPane;
-	static GameMethods gm=new GameMethods();
+	private static GameMethods gm=new GameMethods();
 	private JLabel lblInstructions;
+	private boolean [] checkColorChanged= {false,false,false,false};
 
-	Color[] arrColor={null,null,null,null};
+	private Color[] arrColor={null,null,null,null};
 	
 	/**
 	 * Launch the application.
@@ -222,6 +223,7 @@ public class createCodeApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 				}
 				else {
+					checkColorChanged[0]=true;
 					arrColor[0]=gm.getSelectedColor();
 					pnlCode0.add(new CustomPaintFillComponent());
 					revalidate();
@@ -245,6 +247,7 @@ public class createCodeApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 				}
 				else {
+					checkColorChanged[1]=true;
 					arrColor[1]=gm.getSelectedColor();
 					pnlCode1.add(new CustomPaintFillComponent());
 					revalidate();
@@ -267,6 +270,7 @@ public class createCodeApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 				}
 				else {
+					checkColorChanged[2]=true;
 					arrColor[2]=gm.getSelectedColor();
 					pnlCode2.add(new CustomPaintFillComponent());
 					revalidate();
@@ -289,6 +293,7 @@ public class createCodeApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 				}
 				else {
+					checkColorChanged[3]=true;
 					arrColor[3]=gm.getSelectedColor();
 					pnlCode3.add(new CustomPaintFillComponent());
 					revalidate();
@@ -310,16 +315,30 @@ public class createCodeApplication extends JFrame {
 		lblInstructions.setBounds(10, 67, 634, 62);
 		contentPane.add(lblInstructions);
 		
-		JButton btnNewButton = new JButton("READY!");
+		JButton btnNewButton = new JButton("DONE!");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				gm.setCodeArr(arrColor);
+				boolean allColorsChanged=true;
+				for(int i=0;i<4;i++) {
+					if(checkColorChanged[i]==false) {
+						allColorsChanged=false;
+					}
+				}
+				if(!allColorsChanged) {
+					JOptionPane.showMessageDialog(contentPane, "Please Make Sure You Have Selected A Color For Each Entry In The Code");
+				}
+				else {
+					gm.setCodeArr(arrColor);
+					GameApplication window=new GameApplication();
+					contentPane.setVisible(false);
+					window.frame.setVisible(true);
+				}
 			}
 		});
 		btnNewButton.setBackground(new Color(0, 0, 0));
 		btnNewButton.setFont(new Font("Javanese Text", Font.BOLD, 28));
-		btnNewButton.setForeground(new Color(255, 102, 0));
+		btnNewButton.setForeground(new Color(51, 204, 0));
 		btnNewButton.setBounds(241, 431, 186, 52);
 		contentPane.add(btnNewButton);
 		

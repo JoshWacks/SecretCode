@@ -6,7 +6,27 @@ import javax.swing.JPanel;
 public class GameMethods {
 	private Color selectedColor;
 	private static Color[] codeArr={null,null,null,null};
+	private static String p1Username;
+	private static String p2Username;
 	
+	
+	
+	public static String getP1Username() {
+		return p1Username;
+	}
+
+	public static void setP1Username(String p1Username) {
+		GameMethods.p1Username = p1Username;
+	}
+
+	public static String getP2Username() {
+		return p2Username;
+	}
+
+	public static void setP2Username(String p2Username) {
+		GameMethods.p2Username = p2Username;
+	}
+
 	public Color[] getCodeArr(){
 		return codeArr;
 	}

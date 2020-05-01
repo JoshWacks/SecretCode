@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.Border;
@@ -31,7 +32,7 @@ import javax.swing.SwingConstants;
 
 public class GameApplication {
 
-	private static JFrame frame;
+	public static JFrame frame;
 	private final JPanel pnlMain = new JPanel();
 	private final JPanel pnlColorsCard = new JPanel();
 	JLabel lblAttemptNo = new JLabel();
@@ -192,15 +193,18 @@ public class GameApplication {
 		lblAttemptNo.setBackground(Color.BLACK);
 		lblAttemptNo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
 		frame.getContentPane().add(lblAttemptNo);
-		JButton btnCheck = new JButton("Check");
+		
+		JButton btnCheck=new JButton();
+		
+		btnCheck.setText("Let's See");
 		btnCheck.setBackground(Color.BLACK);
 		btnCheck.setForeground(new Color(0, 128, 0));
-		btnCheck.setFont(new Font("Segoe UI", Font.BOLD, 26));
+		btnCheck.setFont(new Font("ROCKWELL", Font.BOLD, 26));
 		btnCheck.setToolTipText("Press here to check you attempt");
-		btnCheck.setBounds(740, 518, 135, 60);
+		btnCheck.setBounds(710, 529, 168, 60);
 		frame.getContentPane().add(btnCheck);
 		
-		frame.add(lblAttemptNo);
+		frame.getContentPane().add(lblAttemptNo);
 		
 		
 	}
@@ -274,7 +278,7 @@ public class GameApplication {
 							JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 						}
 						else if(!correctRow) {
-							JOptionPane.showMessageDialog(null, "Please Select a position on the "+row+" row");
+							JOptionPane.showMessageDialog(null, "Please Select A Position On The "+row+" Row");
 						}
 						else {
 							
@@ -299,6 +303,54 @@ public class GameApplication {
 			
 		}
 	}
+	public void createJudgePanel() {
+		GridLayout grid=new GridLayout(2,2,25,25);
+		JPanel pnlJudge=new JPanel();
+		pnlJudge.setLayout(grid);
+		
+		Border b=BorderFactory.createLineBorder(Color.BLACK, 5, true);
+		
+		JButton btnYellow=new JButton();
+		btnYellow.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.YELLOW);
+			}
+		});
+		
+		btnYellow.setName("btnYellow");
+		btnYellow.setBackground(Color.YELLOW);
+		btnYellow.setBorder(b);
+		pnlJudge.add(btnYellow);
+		
+		JButton btnRed=new JButton();
+		btnRed.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				gm.setSelectedColor(Color.RED);
+			}
+		});
+		btnRed.setName("btnRed");
+		btnRed.setBackground(Color.RED);
+		btnRed.setBorder(b);
+		pnlJudge.add(btnRed);
+		
+		JTextArea txtAYellow=new JTextArea();
+		txtAYellow.setBorder(b);
+		txtAYellow.setFont(new Font("Javanese Text", Font.BOLD, 14));
+		txtAYellow.setText("For every right color, give them one of these");
+		pnlJudge.add(txtAYellow);
+		
+		JTextArea txtARed=new JTextArea();
+		txtARed.setBorder(b);
+		txtARed.setFont(new Font("Javanese Text", Font.BOLD, 14));
+		txtARed.setText("For every right color that is in the right place, give them one of these");
+		pnlJudge.add(txtARed);
+		
+		
+	}
+		
+		
 	public void createChooseColourPanel() {
 		GridLayout grid=new GridLayout(2,4,15,15);
 		JPanel pnlColors=new JPanel();
