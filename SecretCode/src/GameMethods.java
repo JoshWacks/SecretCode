@@ -44,10 +44,16 @@ public class GameMethods {
 	}
 	
 	public boolean checkCorrectRow(JPanel jp,int n) {
+		
 		String name=jp.getName();
+		int d=2;
+		if(name.charAt(3)=='J') {
+			d=1;
+		}
 		int l=name.length();
-		char c=name.charAt(l-2);
+		char c=name.charAt(l-d);
 		int r=Character.getNumericValue(c);
+		System.out.println(c);
 		
 		if(r==(n-1)) {//because we start counting at 0 but the player is told 1
 			return true;

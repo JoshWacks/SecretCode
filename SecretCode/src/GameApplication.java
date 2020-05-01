@@ -37,6 +37,9 @@ public class GameApplication {
 	private final JPanel pnlColorsCard = new JPanel();
 	JLabel lblAttemptNo = new JLabel();
 	static GameMethods gm=new GameMethods();
+	
+	JPanel pnlColors=new JPanel();
+	JPanel pnlJudge=new JPanel();
 
 	/**
 	 * Launch the application.
@@ -117,6 +120,31 @@ public class GameApplication {
 		}
 	}
 	
+	static class CustomPaintFillJudgeComponent extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=5;
+				int y=8;
+				int w=getSize().width-7;
+				int h=getSize().height-15;
+				((Graphics2D) g2d).setStroke(new BasicStroke(3));
+				
+				
+				g2d.setColor(gm.getSelectedColor());
+
+				
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	public void judgeMethod() {
+		pnlColorsCard.remove(pnlColors);
+		createJudgePanel();
+		pnlColorsCard.add(pnlJudge);
+	}
+	
 //	
 
 	/**
@@ -195,6 +223,14 @@ public class GameApplication {
 		frame.getContentPane().add(lblAttemptNo);
 		
 		JButton btnCheck=new JButton();
+		btnCheck.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				judgeMethod();
+				
+			}
+			
+		});
 		
 		btnCheck.setText("Let's See");
 		btnCheck.setBackground(Color.BLACK);
@@ -209,7 +245,9 @@ public class GameApplication {
 		
 	}
 	
-		JLabel  lblAttempt = new JLabel("Attempt");
+	
+	
+	
 		
 		
 		public void createMainPanel() {
@@ -233,7 +271,52 @@ public class GameApplication {
 				pnlJudge.setBackground(Color.WHITE);
 				
 				for(int k=0;k<4;k++) {
-					pnlJudge.add(new JudgePaintComponent());
+					JPanel temp=new JPanel();
+					temp.setLayout(new BorderLayout(0,0));
+					temp.setBackground(Color.WHITE);
+					temp.add(new JudgePaintComponent());
+					temp.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mousePressed(MouseEvent e) {
+							String str=lblAttemptNo.getText().toString();
+							int n=Integer.parseInt(str);
+							boolean correctRow=gm.checkCorrectRow(pnlJudge, n);
+							String row;
+							if(n==1) {
+								row="1st";
+							}
+							else if(n==2) {
+								row="2nd";
+								
+							}
+							else if(n==3) {
+								row="3rd";
+								
+							}
+							else {
+								row=n+"th";
+							}
+							
+							if(gm.getSelectedColor()!=Color.RED&&gm.getSelectedColor()!=Color.YELLOW) {
+								JOptionPane.showMessageDialog(null, "Please Select A Colour First");
+							}
+							else if(!correctRow) {
+								JOptionPane.showMessageDialog(null, "Please Select A Position On The "+row+" Row");
+							}
+							else {
+								
+								System.out.println("RUN");
+								temp.add(new CustomPaintFillJudgeComponent());
+								
+								temp.revalidate();
+								temp.repaint();
+								
+							}
+						}
+					});
+					
+					pnlJudge.add(temp);
+					
 				}
 				
 				count2--;
@@ -303,9 +386,11 @@ public class GameApplication {
 			
 		}
 	}
-	public void createJudgePanel() {
+		
+		
+	public void createJudgePanel() {//makes the judging panel
 		GridLayout grid=new GridLayout(2,2,25,25);
-		JPanel pnlJudge=new JPanel();
+		
 		pnlJudge.setLayout(grid);
 		
 		Border b=BorderFactory.createLineBorder(Color.BLACK, 5, true);
@@ -315,6 +400,7 @@ public class GameApplication {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				gm.setSelectedColor(Color.YELLOW);
+				
 			}
 		});
 		
@@ -328,6 +414,7 @@ public class GameApplication {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				gm.setSelectedColor(Color.RED);
+				System.out.println("RUN");
 			}
 		});
 		btnRed.setName("btnRed");
@@ -335,25 +422,32 @@ public class GameApplication {
 		btnRed.setBorder(b);
 		pnlJudge.add(btnRed);
 		
-		JTextArea txtAYellow=new JTextArea();
-		txtAYellow.setBorder(b);
-		txtAYellow.setFont(new Font("Javanese Text", Font.BOLD, 14));
-		txtAYellow.setText("For every right color, give them one of these");
-		pnlJudge.add(txtAYellow);
+		JLabel lblYellow=new JLabel();
+		lblYellow.setBorder(b);
+		lblYellow.setHorizontalAlignment(SwingConstants.CENTER);
+		lblYellow.setFont(new Font("Javanese Text", Font.BOLD, 14));
+		lblYellow.setText("Yellow=Right Color Wrong Place");
 		
-		JTextArea txtARed=new JTextArea();
-		txtARed.setBorder(b);
-		txtARed.setFont(new Font("Javanese Text", Font.BOLD, 14));
-		txtARed.setText("For every right color that is in the right place, give them one of these");
-		pnlJudge.add(txtARed);
+		pnlJudge.add(lblYellow);
 		
+		JLabel lblRed=new JLabel();
+		lblRed.setBorder(b);
+		lblRed.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRed.setFont(new Font("Javanese Text", Font.BOLD, 14));
+		lblRed.setText("Red=Right Color Right Place");
+		pnlJudge.add(lblRed);
+		
+		pnlColorsCard.add(pnlJudge);
+
+		
+	
 		
 	}
 		
 		
 	public void createChooseColourPanel() {
 		GridLayout grid=new GridLayout(2,4,15,15);
-		JPanel pnlColors=new JPanel();
+		
 		pnlColors.setLayout(grid);
 		
 		
