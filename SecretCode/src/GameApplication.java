@@ -37,9 +37,15 @@ public class GameApplication {
 	private final JPanel pnlColorsCard = new JPanel();
 	JLabel lblAttemptNo = new JLabel();
 	static GameMethods gm=new GameMethods();
+	//checks that a color for each block was entered
+	JButton btnDone = new JButton();
+	JButton btnCheck=new JButton();
 	
 	JPanel pnlColors=new JPanel();
 	JPanel pnlJudge=new JPanel();
+	
+	boolean onAttempt=true;
+	
 
 	/**
 	 * Launch the application.
@@ -66,6 +72,7 @@ public class GameApplication {
 		initialize();
 		createMainPanel();
 		createChooseColourPanel();
+		createJudgePanel();
 	}
 	
 	static class JudgePaintComponent extends Component {//paints the circles for the judging
@@ -141,8 +148,12 @@ public class GameApplication {
 	}
 	public void judgeMethod() {
 		pnlColorsCard.remove(pnlColors);
-		createJudgePanel();
+
 		pnlColorsCard.add(pnlJudge);
+		onAttempt=false;
+		
+		btnCheck.setVisible(false);
+		btnDone.setVisible(true);
 	}
 	
 //	
@@ -209,20 +220,20 @@ public class GameApplication {
 		lblAttemptHeading.setForeground(new Color(0, 51, 153));
 		lblAttemptHeading.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAttemptHeading.setFont(new Font("Segoe Script", Font.BOLD, 28));
-		lblAttemptHeading.setBounds(707, 98, 187, 82);
+		lblAttemptHeading.setBounds(710, 98, 187, 82);
 		frame.getContentPane().add(lblAttemptHeading);
 		
 		
 		lblAttemptNo.setText("1");
 		lblAttemptNo.setFont(new Font("Rockwell", Font.BOLD, 86));
 		lblAttemptNo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAttemptNo.setBounds(756, 184, 86, 88);
+		lblAttemptNo.setBounds(730, 184, 140, 88);
 		lblAttemptNo.setForeground(new Color(0, 51, 153));
 		lblAttemptNo.setBackground(Color.BLACK);
 		lblAttemptNo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
 		frame.getContentPane().add(lblAttemptNo);
 		
-		JButton btnCheck=new JButton();
+		
 		btnCheck.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -237,10 +248,68 @@ public class GameApplication {
 		btnCheck.setForeground(new Color(0, 128, 0));
 		btnCheck.setFont(new Font("ROCKWELL", Font.BOLD, 26));
 		btnCheck.setToolTipText("Press here to check you attempt");
-		btnCheck.setBounds(710, 529, 168, 60);
+		btnCheck.setBounds(715, 529, 168, 60);
 		frame.getContentPane().add(btnCheck);
 		
+		btnDone.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				String s=lblAttemptNo.getText().toString();
+				switch(s) {
+				case "1":
+					lblAttemptNo.setText("2");
+					break;
+				case "2":
+					lblAttemptNo.setText("3");
+					break;
+				case "3":
+					lblAttemptNo.setText("4");
+					break;
+				case "4":
+					lblAttemptNo.setText("5");
+					break;
+				case "5":
+					lblAttemptNo.setText("6");
+					break;
+				case "6":
+					lblAttemptNo.setText("7");
+					break;					
+				case "7":
+					lblAttemptNo.setText("8");
+					break;
+				case "8":
+					lblAttemptNo.setText("9");
+					break;
+				case "9":
+					lblAttemptNo.setText("10");
+					break;
+					
+					
+				}
+				
+				pnlColorsCard.remove(pnlJudge);
+				//createChooseColourPanel();
+				pnlColorsCard.add(pnlColors);
+				onAttempt=true;
+				
+				btnCheck.setVisible(true);
+				btnDone.setVisible(false);
+				
+				
+				
+			}
+		});
 		frame.getContentPane().add(lblAttemptNo);
+		
+		
+		btnDone.setToolTipText("Press here when you're done checking\r\n");
+		btnDone.setText("Done");
+		btnDone.setForeground(new Color(0, 128, 0));
+		btnDone.setFont(new Font("Rockwell", Font.BOLD, 26));
+		btnDone.setBackground(Color.BLACK);
+		btnDone.setBounds(715, 633, 168, 60);
+		btnDone.setVisible(false);
+		frame.getContentPane().add(btnDone);
 		
 		
 	}
@@ -303,9 +372,11 @@ public class GameApplication {
 							else if(!correctRow) {
 								JOptionPane.showMessageDialog(null, "Please Select A Position On The "+row+" Row");
 							}
+							else if(onAttempt) {
+								JOptionPane.showMessageDialog(frame, "Please only attempt the code in the 4 circles on the right");
+							}
 							else {
 								
-								System.out.println("RUN");
 								temp.add(new CustomPaintFillJudgeComponent());
 								
 								temp.revalidate();
@@ -363,6 +434,9 @@ public class GameApplication {
 						else if(!correctRow) {
 							JOptionPane.showMessageDialog(null, "Please Select A Position On The "+row+" Row");
 						}
+						else if(!onAttempt) {
+							JOptionPane.showMessageDialog(frame, "You cannot edit their code while checking");
+						}
 						else {
 							
 							
@@ -414,7 +488,7 @@ public class GameApplication {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				gm.setSelectedColor(Color.RED);
-				System.out.println("RUN");
+
 			}
 		});
 		btnRed.setName("btnRed");

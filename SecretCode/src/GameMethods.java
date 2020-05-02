@@ -53,7 +53,6 @@ public class GameMethods {
 		int l=name.length();
 		char c=name.charAt(l-d);
 		int r=Character.getNumericValue(c);
-		System.out.println(c);
 		
 		if(r==(n-1)) {//because we start counting at 0 but the player is told 1
 			return true;
