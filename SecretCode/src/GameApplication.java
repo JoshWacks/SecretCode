@@ -9,15 +9,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
+
 import javax.swing.border.Border;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import javax.swing.border.LineBorder;
 
 
 import java.awt.event.ActionListener;
@@ -35,6 +32,7 @@ public class GameApplication {
 	public static JFrame frame;
 	private final JPanel pnlMain = new JPanel();
 	private final JPanel pnlColorsCard = new JPanel();
+	
 	JLabel lblAttemptNo = new JLabel();
 	static GameMethods gm=new GameMethods();
 	//checks that a color for each block was entered
@@ -45,7 +43,7 @@ public class GameApplication {
 	JPanel pnlJudge=new JPanel();
 	
 	boolean onAttempt=true;
-	
+
 
 	/**
 	 * Launch the application.
@@ -71,8 +69,19 @@ public class GameApplication {
 	public GameApplication() {
 		initialize();
 		createMainPanel();
+		
+
+		pnlColorsCard.setBounds(0, 608, 694, 113);
+		
+		pnlColorsCard.setLayout(new CardLayout());
+		frame.getContentPane().add(pnlColorsCard);
+		
+
 		createChooseColourPanel();
 		createJudgePanel();
+		
+		
+		
 	}
 	
 	static class JudgePaintComponent extends Component {//paints the circles for the judging
@@ -108,7 +117,8 @@ public class GameApplication {
 			
 		}
 	}
-	static class CustomPaintFillComponent extends Component {//fills the circle with the required colour
+	
+	static class CustomPaintFillAttemptGreen extends Component {//fills the circle with the required colour
 		public void paint(Graphics g) {
 			
 				Graphics g2d=(Graphics2D)g;
@@ -118,8 +128,150 @@ public class GameApplication {
 				int w=getSize().width-90;
 				int h=getSize().height-5;
 				
+
+
+				g2d.setColor(Color.GREEN);
+
+
 				
-				g2d.setColor(gm.getSelectedColor());
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	static class CustomPaintFillAttemptBlack extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=40;
+				int y=3;
+				int w=getSize().width-90;
+				int h=getSize().height-5;
+				
+
+
+				g2d.setColor(Color.BLACK);
+
+
+				
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	static class CustomPaintFillAttemptBlue extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=40;
+				int y=3;
+				int w=getSize().width-90;
+				int h=getSize().height-5;
+				
+
+
+				g2d.setColor(Color.BLUE);
+
+
+				
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	static class CustomPaintFillAttemptWhite extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=40;
+				int y=3;
+				int w=getSize().width-90;
+				int h=getSize().height-5;
+				
+
+
+				g2d.setColor(Color.WHITE);
+
+
+				
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	static class CustomPaintFillAttemptMagenta extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=40;
+				int y=3;
+				int w=getSize().width-90;
+				int h=getSize().height-5;
+				
+
+
+				g2d.setColor(Color.MAGENTA);
+
+
+				
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	static class CustomPaintFillAttemptRed extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=40;
+				int y=3;
+				int w=getSize().width-90;
+				int h=getSize().height-5;
+				
+
+
+				g2d.setColor(Color.RED);
+
+
+				
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	static class CustomPaintFillAttemptGray extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=40;
+				int y=3;
+				int w=getSize().width-90;
+				int h=getSize().height-5;
+				
+
+
+				g2d.setColor(Color.GRAY);
+
+
+				
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	static class CustomPaintFillAttemptYellow extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=40;
+				int y=3;
+				int w=getSize().width-90;
+				int h=getSize().height-5;
+				
+
+
+				g2d.setColor(Color.YELLOW);
+
 
 				
 				g2d.fillOval(x, y, w, h);
@@ -127,7 +279,9 @@ public class GameApplication {
 		}
 	}
 	
-	static class CustomPaintFillJudgeComponent extends Component {//fills the circle with the required colour
+	
+	
+	static class CustomPaintFillJudgeYellow extends Component {//fills the circle with the required colour
 		public void paint(Graphics g) {
 			
 				Graphics g2d=(Graphics2D)g;
@@ -137,23 +291,45 @@ public class GameApplication {
 				int w=getSize().width-7;
 				int h=getSize().height-15;
 				((Graphics2D) g2d).setStroke(new BasicStroke(3));
-				
-				
-				g2d.setColor(gm.getSelectedColor());
 
-				
+				g2d.setColor(Color.YELLOW);
+		
 				g2d.fillOval(x, y, w, h);
 			
 		}
 	}
-	public void judgeMethod() {
-		pnlColorsCard.remove(pnlColors);
+	
 
-		pnlColorsCard.add(pnlJudge);
+	static class CustomPaintFillJudgeRed extends Component {//fills the circle with the required colour
+		public void paint(Graphics g) {
+			
+				Graphics g2d=(Graphics2D)g;
+				
+				int x=5;
+				int y=8;
+				int w=getSize().width-7;
+				int h=getSize().height-15;
+				((Graphics2D) g2d).setStroke(new BasicStroke(3));
+
+				g2d.setColor(Color.RED);
+		
+				g2d.fillOval(x, y, w, h);
+			
+		}
+	}
+	
+	public void judgeMethod() {
+		
 		onAttempt=false;
+		CardLayout cl = (CardLayout)(pnlColorsCard.getLayout());
+		cl.show(pnlColorsCard, "judge");
+		
+		
+		
 		
 		btnCheck.setVisible(false);
 		btnDone.setVisible(true);
+		frame.revalidate();
 	}
 	
 //	
@@ -183,11 +359,7 @@ public class GameApplication {
 		pnlMain.setLayout(grid);
 		
 		
-		pnlColorsCard.setBackground(Color.ORANGE);
-		pnlColorsCard.setBounds(0, 608, 694, 113);
-		frame.getContentPane().add(pnlColorsCard);
-		pnlColorsCard.setLayout(new CardLayout(0, 0));
-		
+				
 		JLabel lblDanger = new JLabel("");
 		lblDanger.setBackground(Color.RED);
 		lblDanger.setForeground(Color.RED);
@@ -248,7 +420,7 @@ public class GameApplication {
 		btnCheck.setForeground(new Color(0, 128, 0));
 		btnCheck.setFont(new Font("ROCKWELL", Font.BOLD, 26));
 		btnCheck.setToolTipText("Press here to check you attempt");
-		btnCheck.setBounds(715, 529, 168, 60);
+		btnCheck.setBounds(715, 530, 168, 60);
 		frame.getContentPane().add(btnCheck);
 		
 		btnDone.addMouseListener(new MouseAdapter() {
@@ -287,13 +459,13 @@ public class GameApplication {
 					
 				}
 				
-				pnlColorsCard.remove(pnlJudge);
-				//createChooseColourPanel();
-				pnlColorsCard.add(pnlColors);
+				CardLayout cl = (CardLayout)(pnlColorsCard.getLayout());
+				cl.show(pnlColorsCard, "colors");
 				onAttempt=true;
 				
 				btnCheck.setVisible(true);
 				btnDone.setVisible(false);
+				//frame.revalidate();
 				
 				
 				
@@ -341,7 +513,7 @@ public class GameApplication {
 				
 				for(int k=0;k<4;k++) {
 					JPanel temp=new JPanel();
-					temp.setLayout(new BorderLayout(0,0));
+					temp.setLayout(new BorderLayout());
 					temp.setBackground(Color.WHITE);
 					temp.add(new JudgePaintComponent());
 					temp.addMouseListener(new MouseAdapter() {
@@ -365,8 +537,8 @@ public class GameApplication {
 							else {
 								row=n+"th";
 							}
-							
-							if(gm.getSelectedColor()!=Color.RED&&gm.getSelectedColor()!=Color.YELLOW) {
+
+							if(!gm.getSelectedColor().equals(Color.RED) && !gm.getSelectedColor().equals(Color.YELLOW)) {
 								JOptionPane.showMessageDialog(null, "Please Select A Colour First");
 							}
 							else if(!correctRow) {
@@ -376,9 +548,16 @@ public class GameApplication {
 								JOptionPane.showMessageDialog(frame, "Please only attempt the code in the 4 circles on the right");
 							}
 							else {
+
+								if(gm.getSelectedColor().equals(Color.RED)) {
+									temp.add(new CustomPaintFillJudgeRed());
+								}
+								else if(gm.getSelectedColor().equals(Color.YELLOW)) {
+									temp.add(new CustomPaintFillJudgeYellow());
+								}
 								
-								temp.add(new CustomPaintFillJudgeComponent());
 								
+//								
 								temp.revalidate();
 								temp.repaint();
 								
@@ -440,9 +619,33 @@ public class GameApplication {
 						else {
 							
 							
-							pnlAttempt.add(new CustomPaintFillComponent());
+							if(gm.getSelectedColor().equals(Color.GREEN)) {
+								pnlAttempt.add(new CustomPaintFillAttemptGreen());
+							}
+							else if(gm.getSelectedColor().equals(Color.GRAY)) {
+								pnlAttempt.add(new CustomPaintFillAttemptGray());
+							}
+							else if(gm.getSelectedColor().equals(Color.WHITE)) {
+								pnlAttempt.add(new CustomPaintFillAttemptWhite());
+							}
+							else if(gm.getSelectedColor().equals(Color.BLUE)) {
+								pnlAttempt.add(new CustomPaintFillAttemptBlue());
+							}
+							else if(gm.getSelectedColor().equals(Color.RED)) {
+								pnlAttempt.add(new CustomPaintFillAttemptRed());
+							}
+							else if(gm.getSelectedColor().equals(Color.MAGENTA)) {
+								pnlAttempt.add(new CustomPaintFillAttemptMagenta());
+							}
+							else if(gm.getSelectedColor().equals(Color.YELLOW)) {
+								pnlAttempt.add(new CustomPaintFillAttemptYellow());
+							}
+							else if(gm.getSelectedColor().equals(Color.BLACK)) {
+								pnlAttempt.add(new CustomPaintFillAttemptBlack());
+							}
 							
 							pnlAttempt.revalidate();
+							pnlAttempt.repaint();
 							
 						}
 						
@@ -511,7 +714,7 @@ public class GameApplication {
 		lblRed.setText("Red=Right Color Right Place");
 		pnlJudge.add(lblRed);
 		
-		pnlColorsCard.add(pnlJudge);
+		pnlColorsCard.add(pnlJudge,"judge");
 
 		
 	
@@ -626,6 +829,6 @@ public class GameApplication {
 		pnlColors.add(btnGray);
 		
 		
-		pnlColorsCard.add(pnlColors);
+		pnlColorsCard.add(pnlColors,"colors");
 	}
 }
